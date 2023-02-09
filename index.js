@@ -1,97 +1,137 @@
 //Start with entry variables to be used for main JS page
+const Manager = require("./lib/manager");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/intern");
 
-    const testsEmp = require("./Tests/Employee.test")
-    const testsEng = require("./Tests/Engineer.test")
-    const testsInt = require("./Tests/Intern.test")
-    const testsMan = require("./Tests/Manager.test")
-    
+// const base = require("./src/generate")
+
+const inquirer = require("inquirer");
+const fs = require("fs");
+
+let team = [];
+
+const menu = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "addMore",
+        messsage: "Would you like to add another employee?",
+        choices: ["Engineer", "Intern", "Done"],
+      },
+    ])
+    .then((res) => {
+      if (res.addMore === "Engineer") {
+        renderEngineerdata()
+      } else if(res.addMore === "Intern") {
+        renderInterndata()
+      } else if( res.addMore === "Done") {
+        console.log("-------Finished-------")
+        console.log(team)
+      }
+    });
+};
+
+// 1. For when a Manager is selected,
+const renderManagerdata = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the new Manager?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is the new Manager's id?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is their email address?",
+      },
+      {
+        type: "input",
+        name: "officeNum",
+        message: "What is their office number?",
+      },
+    ])
+    .then((managerData) => {
+      const { name, id, email, officeNum } = managerData;
+      const manager = new Manager(name, id, email, officeNum);
+      team.push(manager);
+      menu();
+    });
+};
+
+// 2. For when an Engineer is selected,
+const renderEngineerdata = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the new Engineer?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is the new Engineer id?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is their email address?",
+      },
+      {
+        type: "input",
+        name: "github",
+        message: "What is their Github username?",
+      },
+    ])
+    .then((engineerData) => {
+      const { name, id, email, github } = engineerData;
+      const engineer = new Engineer(name, id, email, github);
+      team.push(engineer);
+      menu();
+    });
+};
+
+// 3. For when an Intern is selected,
+const renderInterndata = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the new Intern?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "What is the new Interns id?",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "What is their email address?",
+      },
+      {
+        type: "input",
+        name: "school",
+        message: "What is the name of the school they went to?",
+      },
+    ])
+    .then((internData) => {
+      const { name, id, email, school } = internData;
+      const intern = new Intern(name, id, email, school);
+      team.push(intern);
+      menu();
+    });
+};
+
+renderManagerdata();
 
 
-const inquirer = require('inquirer');
-const fs = require('fs');
 
-// Write up Inquirer for the data needed when you run Node for a new Employee and the resulting populated data
-const questions = [
-    {
-     type: 'input',
-     name: 'NAME',
-     message: 'What is the name of the new employee?',   
-    },
-    {
-    type: 'input',
-    name: 'DESCRIPTION',
-    message: 'What is their new id# ?',
-    },
-    {
-    type: 'input',
-    name: 'INFORMATION',
-    message: 'What is their email address?',
-    },
-    {
-    type: 'list',
-    name: 'EMPLOYEE TYPE',
-    message: 'What type of employee was hired?',
-    choices:    ["Engineer", "Intern", "Manager"]
-    },
-    {
-    type: 'input',
-    name: 'GITHUB',
-    message: 'What is their Github username?',
-    },
-    {
-    type: 'input',
-    name: 'SCHOOL',
-    message: 'What school did they go to?',
-    },
-    ];
-
-    // Create a function to create new employee file
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, function(err){
-        err ? console.log(err) : console.log("Employee successfully added!")
-    })
-}
-
-// Create a function to initialize app
-function init() {
-    inquirer.prompt(questions).then(function(data){
-        writeToFile("index.html", tests(data))
-    })
-}
-
-// Function call to initialize app
-init();
-
-//Write functions for when a specific employee is selected, as add'l info will be required and added.
-
-// 1. For when a Manager is selected, 
-function renderManagerdata(data) {
-    let choice = data;
-    if(choice === "None") {
-      return ""
-    } else {
-      return ``;
-    }
-  }
-
-  // 2. For when an Engineer is selected,
-  function renderEngineerdata(data) {
-    let choice = data;
-    if(choice === "None") {
-      return ""
-    } else {
-      return ``;
-    }
-  }
-
-  // 3. For when an Intern is selected,
-  function renderInterndata(data) {
-    let choice = data;
-    if(choice === "None") {
-      return ""
-    } else {
-      return ``;
-    }
-  }
-
-  
